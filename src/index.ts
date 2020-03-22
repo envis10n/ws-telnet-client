@@ -181,6 +181,8 @@ class WST {
                         case TelnetNegotiation.WILL:
                             if (this.options.GetState(option) === TelnetOptionState.WAITING) {
                                 this.options.SetState(option, TelnetOptionState.ENABLED);
+                            } else {
+                                this.options.SetState(option, TelnetOptionState.WAITING);
                             }
                             this.ontelnet({
                                 command,
@@ -190,7 +192,9 @@ class WST {
                             break;
                         case TelnetNegotiation.WONT:
                             if (this.options.GetState(option) === TelnetOptionState.WAITING) {
-                                this.options.SetState(option, TelnetOptionState.ENABLED);
+                                this.options.SetState(option, TelnetOptionState.DISABLED);
+                            } else {
+                                this.options.SetState(option, TelnetOptionState.WAITING);
                             }
                             this.ontelnet({
                                 command,
@@ -201,6 +205,8 @@ class WST {
                         case TelnetNegotiation.DO:
                             if (this.options.GetState(option) === TelnetOptionState.WAITING) {
                                 this.options.SetState(option, TelnetOptionState.ENABLED);
+                            } else {
+                                this.options.SetState(option, TelnetOptionState.WAITING);
                             }
                             this.ontelnet({
                                 command,
@@ -210,7 +216,9 @@ class WST {
                             break;
                         case TelnetNegotiation.DONT:
                             if (this.options.GetState(option) === TelnetOptionState.WAITING) {
-                                this.options.SetState(option, TelnetOptionState.ENABLED);
+                                this.options.SetState(option, TelnetOptionState.DISABLED);
+                            } else {
+                                this.options.SetState(option, TelnetOptionState.WAITING);
                             }
                             this.ontelnet({
                                 command,
@@ -262,11 +270,17 @@ class WST {
         if (this.options.GetState(option) === TelnetOptionState.DISABLED) {
             this.options.SetState(option, TelnetOptionState.WAITING);
             this.sendTelnet(TelnetNegotiation.WILL, option);
+        } else if (this.options.GetState(option) === TelnetOptionState.WAITING) {
+            this.options.SetState(option, TelnetOptionState.ENABLED);
+            this.sendTelnet(TelnetNegotiation.WILL, option);
         }
     }
     public wont(option: TelnetOption): void {
         if (this.options.GetState(option) === TelnetOptionState.DISABLED) {
             this.options.SetState(option, TelnetOptionState.WAITING);
+            this.sendTelnet(TelnetNegotiation.WONT, option);
+        } else if (this.options.GetState(option) === TelnetOptionState.WAITING) {
+            this.options.SetState(option, TelnetOptionState.DISABLED);
             this.sendTelnet(TelnetNegotiation.WONT, option);
         }
     }
@@ -274,11 +288,17 @@ class WST {
         if (this.options.GetState(option) === TelnetOptionState.DISABLED) {
             this.options.SetState(option, TelnetOptionState.WAITING);
             this.sendTelnet(TelnetNegotiation.DO, option);
+        } else if (this.options.GetState(option) === TelnetOptionState.WAITING) {
+            this.options.SetState(option, TelnetOptionState.ENABLED);
+            this.sendTelnet(TelnetNegotiation.DO, option);
         }
     }
     public dont(option: TelnetOption): void {
         if (this.options.GetState(option) === TelnetOptionState.DISABLED) {
             this.options.SetState(option, TelnetOptionState.WAITING);
+            this.sendTelnet(TelnetNegotiation.DONT, option);
+        } else if (this.options.GetState(option) === TelnetOptionState.WAITING) {
+            this.options.SetState(option, TelnetOptionState.DISABLED);
             this.sendTelnet(TelnetNegotiation.DONT, option);
         }
     }
