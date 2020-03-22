@@ -158,6 +158,11 @@ class WST {
                             const oft2 = dv.byteLength - 1;
                             if (dv[oft] == 255 && dv[oft2] == TelnetNegotiation.SE) {
                                 const dv2 = new Uint8Array(dv.buffer, 3, dv.byteLength - 5);
+                                this.ontelnet({
+                                    command,
+                                    option,
+                                    data: dv2,
+                                });
                                 this.onsubnegotiation(option, dv2);
                                 switch (option) {
                                     case TelnetOption.GMCP:
@@ -177,25 +182,47 @@ class WST {
                             if (this.options.GetState(option) === TelnetOptionState.WAITING) {
                                 this.options.SetState(option, TelnetOptionState.ENABLED);
                             }
+                            this.ontelnet({
+                                command,
+                                option,
+                            });
                             this.onwill(option);
                             break;
                         case TelnetNegotiation.WONT:
                             if (this.options.GetState(option) === TelnetOptionState.WAITING) {
                                 this.options.SetState(option, TelnetOptionState.ENABLED);
                             }
+                            this.ontelnet({
+                                command,
+                                option,
+                            });
                             this.onwont(option);
                             break;
                         case TelnetNegotiation.DO:
                             if (this.options.GetState(option) === TelnetOptionState.WAITING) {
                                 this.options.SetState(option, TelnetOptionState.ENABLED);
                             }
+                            this.ontelnet({
+                                command,
+                                option,
+                            });
                             this.ondo(option);
                             break;
                         case TelnetNegotiation.DONT:
                             if (this.options.GetState(option) === TelnetOptionState.WAITING) {
                                 this.options.SetState(option, TelnetOptionState.ENABLED);
                             }
+                            this.ontelnet({
+                                command,
+                                option,
+                            });
                             this.ondont(option);
+                            break;
+                        default:
+                            this.ontelnet({
+                                command,
+                                option,
+                            });
                             break;
                     }
                 }
