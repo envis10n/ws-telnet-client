@@ -1,6 +1,6 @@
 {
     "name": "ws-telnet-client",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "description": "Browser library for ws-telnet client.",
     "repository": "https://github.com/envis10n/ws-telnet-client",
     "bugs": "https://github.com/envis10n/ws-telnet-client/issues",
