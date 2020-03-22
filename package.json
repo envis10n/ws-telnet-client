@@ -1,0 +1,15 @@
+{
+    "name": "ws-telnet-client",
+    "version": "0.0.1",
+    "description": "Browser library for ws-telnet client.",
+    "main": "build/index.js",
+    "types": "build",
+    "scripts": {
+        "build": "tsc"
+    },
+    "author": "envis10n <envis10n@protonmail.com>",
+    "license": "MIT",
+    "devDependencies": {
+        "typescript": "^3.8.3"
+    }
+}
